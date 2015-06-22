@@ -37,4 +37,32 @@ RSpec.describe AddressBook do
     end
   end
 
+  context "get_entry" do
+    it "checks the first entry" do
+      book.import_from_csv("entries.csv")
+      first_entry = book.get_entry(0)
+      check_entry(first_entry, "Bill", "555-555-4854", "bill@blocmail.com")
+    end
+
+    it "checks the middle entry" do
+      book.import_from_csv("entries.csv")
+      middle_entry = book.get_entry(2)
+      check_entry(middle_entry, "Joe", "555-555-3660", "joe@blocmail.com")
+    end
+
+    it "checks the last entry" do
+      book.import_from_csv("entries.csv")
+      last_entry = book.get_entry(4)
+      check_entry(last_entry, "Sussie", "555-555-2036", "sussie@blocmail.com")
+    end
+    
+    it "checks output of index below zero" do
+      expect {book.get_entry(-1)}.to output("The index you selected is out of range.\n").to_stdout
+    end
+
+    it "checks output of index greater than entries.size" do
+      expect {book.get_entry(99)}.to output("The index you selected is out of range.\n").to_stdout
+    end
+
+  end
 end
